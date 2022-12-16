@@ -1,6 +1,6 @@
 # Coding Conventions for our WIZ Members:
 
-- With `java`:
+- With `java`: [Oracle's Offical Documentation][1]
 
 ```java
 package org.wiz.website.backend;
@@ -50,3 +50,5 @@ public class Main {
 
 }
 ```
+
+[1]: https://www.oracle.com/java/technologies/javase/codeconventions-programmingpractices.html
