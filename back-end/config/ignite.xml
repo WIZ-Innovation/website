@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.apache.ignite.configuration.IgniteConfiguration">
+
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean
+                        class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:47500..47502</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+
+        <!-- <property name="dataStorageConfiguration">
+            <bean
+        class="org.apache.ignite.configuration.DataStorageConfiguration">
+                <property
+        name="dataRegionConfigurations">
+                    <list>
+                        <bean
+        class="org.apache.ignite.configuration.DataRegionConfiguration">
+                            <property
+        name="name" value="20GB_Region" />
+                            <property name="initialSize"
+        value="#{500L * 1024 * 1024}" />
+                            <property name="maxSize"
+        value="#{20L * 1024 * 1024 * 1024}" />
+                            <property
+        name="pageEvictionMode" value="RANDOM_LRU" />
+                        </bean>
+                    </list>
+        </property>
+            </bean>
+        </property>
+    -->
+
+        <property name="cacheConfiguration">
+            <list>
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="__vertx.*" />
+                    <property name="cacheMode" value="REPLICATED" />
+                    <property name="atomicityMode" value="ATOMIC" />
+                    <property name="writeSynchronizationMode" value="FULL_SYNC" />
+                </bean>
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="*" />
+                    <property name="cacheMode" value="PARTITIONED" />
+                    <property name="backups" value="1" />
+                    <property name="readFromBackup" value="false" />
+                    <property name="atomicityMode" value="ATOMIC" />
+                    <property name="affinity">
+                        <bean
+                            class="org.apache.ignite.cache.affinity.rendezvous.RendezvousAffinityFunction">
+                            <property name="partitions" value="128" />
+                        </bean>
+                    </property>
+                    <property name="writeSynchronizationMode" value="FULL_SYNC" />
+                </bean>
+            </list>
+        </property>
+
+        <property name="gridLogger">
+            <bean class="com.wiz.logs.IgniteLoggerImpl" />
+        </property>
+
+        <property name="metricsLogFrequency" value="0" />
+    </bean>
+</beans>
